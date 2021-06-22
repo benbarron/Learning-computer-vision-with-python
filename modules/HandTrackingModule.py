@@ -14,11 +14,9 @@ class HandDetector:
         self.hands = mp.solutions.hands.Hands(
             mode, maxHands, detectionConf, trackingConf)
 
-    def findHands(self, image, draw=False):
+    def findHands(self, image):
         self.image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(self.image)
-        if draw:
-            self.drawHands()
 
     def drawHands(self):
         if self.results.multi_hand_landmarks:
@@ -56,7 +54,7 @@ class HandDetector:
     def foundHand(self):
         return self.results.multi_hand_landmarks
 
-    def getRGB(self):
+    def getImage(self):
         return cv2.cvtColor(self.image, cv2.COLOR_RGB2BGR)
 
 
@@ -68,12 +66,12 @@ def main():
 
     while cv2.waitKey(1) != ord('q'):
         hasFrame, frame = cap.read()
-        detector.findHands(frame, draw=True)
+        detector.findHands(frame)
 
         if detector.foundHand():
             print(detector.getDistance(4, 8))
 
-        image = detector.getRGB()
+        image = detector.getImage()
 
         currentTime = time.time()
         fps = 1 / (currentTime - prevTime)
