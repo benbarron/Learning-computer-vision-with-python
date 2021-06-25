@@ -6,6 +6,8 @@ detector = HandDetector()
 cap = cv2.VideoCapture(1)
 prevTime = 0
 
+hist = {0, 0, 0, 0, 0, 0, 0, 0, 0}
+
 comparisons = [
     (4, 5),
     (8, 6),
@@ -29,7 +31,10 @@ while cv2.waitKey(1) != ord('q'):
             if pos1[1] < pos2[1]:
                 counter += 1
 
-    print(counter)
+    hist.pop()
+    hist.add(counter)
+    if all([h == counter for h in hist]):
+        print(counter)
 
     currentTime = time.time()
     fps = 1 / (currentTime - prevTime)

@@ -48,7 +48,7 @@ class HandDetector:
             if landmark[0] == landMark2:
                 lm2 = landmark
         if lm1 == None or lm2 == None:
-            raise Exception("LM not found")
+            return 999999
         return math.sqrt((lm1[1] - lm2[1])**2 + (lm1[2] - lm2[2])**2)
 
     def foundHand(self):
